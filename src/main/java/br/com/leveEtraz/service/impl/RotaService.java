@@ -8,11 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.leveEtraz.dao.IRotaDao;
-import br.com.leveEtraz.dao.impl.MapaDao;
 import br.com.leveEtraz.entity.Mapa;
 import br.com.leveEtraz.entity.Rota;
 import br.com.leveEtraz.service.IRotaService;
 
+/**
+ * Classe de service para {@link Mapa}
+ * @author frozendo
+ *
+ */
 @Transactional
 @Service
 public class RotaService implements IRotaService {
@@ -20,6 +24,7 @@ public class RotaService implements IRotaService {
 	@Autowired
 	private IRotaDao rotaDao;
 
+	@Override
 	public void save(Mapa mapa) {
 		for (Rota rota : mapa.getRotas()) {
 			rota.setMapa(mapa);

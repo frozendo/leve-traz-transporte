@@ -1,6 +1,9 @@
 package br.com.leveEtraz.exception;
 
-
+/**
+ * Exception lançada quando há quebra nas regras de negócio
+ * @author frozendo
+ */
 public class BusinessException extends RuntimeException {
 
     /**
@@ -20,6 +23,11 @@ public class BusinessException extends RuntimeException {
         super();
     }
     
+    /**
+     * Construtor passando mensagem de erro
+     * @param message
+     * @param argumentList
+     */
     public BusinessException(String message, Object... argumentList) {
         super(message);
         this.argumentList = argumentList;

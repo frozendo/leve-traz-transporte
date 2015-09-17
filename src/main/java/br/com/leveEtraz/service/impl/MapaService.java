@@ -8,6 +8,11 @@ import br.com.leveEtraz.dao.IMapaDao;
 import br.com.leveEtraz.entity.Mapa;
 import br.com.leveEtraz.service.IMapaService;
 
+/**
+ * Classe de service para {@link Mapa}
+ * @author frozendo
+ *
+ */
 @Service
 @Transactional
 public class MapaService implements IMapaService {
@@ -23,11 +28,6 @@ public class MapaService implements IMapaService {
 	@Override
 	public boolean verificarNomeExiste(Mapa mapa) {
 		return mapaDao.verificarNomeExiste(mapa);
-	}
-
-	@Override
-	public Mapa recuperarRotas(String nomeMapa) {
-		return mapaDao.buscarRotas(nomeMapa);
 	}
 
 }

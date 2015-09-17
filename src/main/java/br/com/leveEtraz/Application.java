@@ -6,6 +6,10 @@ import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
+/***
+ * Classe responsável por iniciar o serviço
+ * @author frozendo
+ */
 @Configuration
 @EnableAutoConfiguration
 @ComponentScan

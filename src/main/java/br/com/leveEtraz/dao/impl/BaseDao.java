@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -13,8 +14,11 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import org.springframework.stereotype.Repository;
 
-import br.com.leveEtraz.entity.Mapa;
-
+/**
+ * Classe base para transações com o banco
+ * Todas as classes DAO são construídas a partir dessa
+ * @author frozendo
+ */
 @Repository
 public class BaseDao {
 	
@@ -95,11 +99,28 @@ public class BaseDao {
 			e.printStackTrace();
 		}    	
     }
+    
+    /**
+     * Metodo que retorna um novo objeto criteria para consultas nas classes DAO
+     * @param clazz
+     * @return novo obj criteria
+     */
+    protected Criteria getCriteria(Class<?> clazz) {
+    	return getSession().createCriteria(clazz);
+    }
 	
-	protected Session getSession() {
+    /**
+     * Cria uma sessão com o banco
+     * @return
+     */
+	private Session getSession() {
 		return buildSessionFactory().openSession();		
 	}
 	
+	/***
+	 * Recupera as configurações para conectar no banco
+	 * @return
+	 */
 	private SessionFactory buildSessionFactory() {
         try {
 

@@ -12,23 +12,40 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
+/**
+ * Entidade que mapeia a tabela MAPA
+ * @author frozendo
+ */
 @Entity
 @Table(name = "MAPA")
 public class Mapa {
 
+	/**
+	 * Identificador da tabela
+	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "MAPA_ID")
 	private Long id;
 
+	/**
+	 * Nome do mapa
+	 */
 	@NotNull
+	@Size(max = 30)
 	@Column(name = "MAPA_TX_NOME") 
 	private String nome;
 
+	/**
+	 * Lista de rotas relacionadas ao mapa
+	 */
 	@OneToMany(mappedBy = "mapa", fetch = FetchType.LAZY)
 	private Set<Rota> rotas = new HashSet<Rota>();
 
+	/* GETTERS e SETTERS */
+	
 	public Long getId() {
 		return id;
 	}

@@ -1,1 +1,1 @@
-GRANT ALL PRIVILEGES ON transportadora.* TO 'levaTraz'@'localhost' IDENTIFIED BY '123456' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON transportadora.* TO 'levaTrazUser'@'localhost' IDENTIFIED BY '123456' WITH GRANT OPTION;

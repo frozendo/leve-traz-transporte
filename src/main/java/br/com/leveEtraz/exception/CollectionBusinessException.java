@@ -4,6 +4,9 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Exception que representa um conjunto de regras quebradas
+ */
 public class CollectionBusinessException extends RuntimeException {
 
     /**
@@ -17,7 +20,7 @@ public class CollectionBusinessException extends RuntimeException {
     Set<BusinessException> businessExceptionList = new LinkedHashSet<BusinessException>();
 
     /**
-     * Construtor por defeito
+     * Construtor default
      */
     public CollectionBusinessException() {
         super();

@@ -1,21 +1,49 @@
 package br.com.leveEtraz.dto;
 
-public class RecebeMapaDestinoDTO {
+/**
+ * Classe responsavel por transferir os dados entre as camadas
+ * quando o usuário solicita a menor rota para um destino
+ * @author frozendo
+ */
+public class MapaDestinoDTO {
 	
+	/**
+	 * Nome do mapa solicitado
+	 */
 	private String nomeMapa;
 	
+	/**
+	 * Ponto de origem
+	 */
 	private String origem;
 	
+	/**
+	 * Ponto de destino
+	 */
 	private String destino;
 	
+	/**
+	 * Capacidade que o veiculo é capaz de rodar sem abastecer
+	 */
 	private Double autonomiaVeiculo;
 	
-	private Integer valorCombustivel;
+	/**
+	 * Valor do litro do combustivel
+	 */
+	private Float valorCombustivel;
 	
+	/**
+	 * Melhor caminho encontrado entre os pontos de origem e destino
+	 */
 	private String melhorRota;
 	
-	private Integer custo;
+	/**
+	 * Custo da execução da melhor rota
+	 */
+	private Float custo;
 
+	/* GETTERS e SETTERS */
+	
 	public String getNomeMapa() {
 		return nomeMapa;
 	}
@@ -48,11 +76,11 @@ public class RecebeMapaDestinoDTO {
 		this.autonomiaVeiculo = autonomiaVeiculo;
 	}
 
-	public Integer getValorCombustivel() {
+	public Float getValorCombustivel() {
 		return valorCombustivel;
 	}
 
-	public void setValorCombustivel(Integer valorCombustivel) {
+	public void setValorCombustivel(Float valorCombustivel) {
 		this.valorCombustivel = valorCombustivel;
 	}
 
@@ -64,11 +92,11 @@ public class RecebeMapaDestinoDTO {
 		this.melhorRota = melhorRota;
 	}
 
-	public Integer getCusto() {
+	public Float getCusto() {
 		return custo;
 	}
 
-	public void setCusto(Integer custo) {
+	public void setCusto(Float custo) {
 		this.custo = custo;
 	}
 
