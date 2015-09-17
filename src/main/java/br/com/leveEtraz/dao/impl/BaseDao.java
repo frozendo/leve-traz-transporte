@@ -96,7 +96,7 @@ public class BaseDao {
 		}    	
     }
 	
-	private Session getSession() {
+	protected Session getSession() {
 		return buildSessionFactory().openSession();		
 	}
 	

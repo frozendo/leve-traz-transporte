@@ -17,7 +17,25 @@ public class MapaService implements IMapaService {
 
 	@Override
 	public void save(Mapa mapa) {
+		validarCamposObrigatorios(mapa);
+		validarRegras(mapa);
 		mapaDao.save(mapa);
+	}
+	
+	private void validarCamposObrigatorios(Mapa mapa) {
+		if (mapa.getNome().equals("")) {
+			//retornar mensagem de aviso
+		}
+		
+		if (mapa.getRotas() == null || mapa.getRotas().size() == 0) {
+			//retornar mensagem de aviso
+		}
+	}
+	
+	private void validarRegras(Mapa mapa) {
+		if (mapaDao.verificarNomeExiste(mapa)) {
+			//retornar mensagem de aviso			
+		}
 	}
 
 }
