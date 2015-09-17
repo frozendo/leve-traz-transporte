@@ -9,5 +9,9 @@ import br.com.leveEtraz.entity.Rota;
 public interface IRotaService {
 	
 	void save(Mapa mapa);
+	
+	boolean rotaExiste(Rota rota, Long mapaId);
+	
+	List<Rota> recuperarRotasMapa(String nomeMapa);
 
 }

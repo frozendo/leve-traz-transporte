@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,7 +26,7 @@ public class Mapa {
 	@Column(name = "MAPA_TX_NOME") 
 	private String nome;
 
-	@OneToMany(mappedBy = "mapa")
+	@OneToMany(mappedBy = "mapa", fetch = FetchType.LAZY)
 	private Set<Rota> rotas = new HashSet<Rota>();
 
 	public Long getId() {

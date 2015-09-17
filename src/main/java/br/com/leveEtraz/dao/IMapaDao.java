@@ -7,5 +7,7 @@ public interface IMapaDao {
 	void save(Mapa mapa);
 	
 	boolean verificarNomeExiste(Mapa mapa);
+	
+	Mapa buscarRotas(String nomeMapa);
 
 }
