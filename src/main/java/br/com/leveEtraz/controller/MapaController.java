@@ -7,21 +7,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.leveEtraz.entity.Mapa;
+import br.com.leveEtraz.service.IMapaRotaFacade;
 import br.com.leveEtraz.service.IMapaService;
 
 @RestController
 public class MapaController {
 
 	@Autowired
-	private IMapaService mapaService;
+	private IMapaRotaFacade mapaRotaFacade;
 
-	@RequestMapping(value = "/teste", method = RequestMethod.POST)
-	public void teste(@RequestBody Mapa mapa) {
-		mapaService.save(mapa);
+	@RequestMapping(value = "/novoMapa", method = RequestMethod.POST)
+	public void novoMapa(@RequestBody Mapa mapa) {
+		mapaRotaFacade.save(mapa);
 	}
 
-	@RequestMapping(value = "/teste", method = RequestMethod.GET)
-	public void testeGet() {
+	@RequestMapping(value = "/melhorRotaMapa", method = RequestMethod.GET)
+	public void melhorRotaMapa() {
 		System.out.print("Teste WebService");
 	}
 
