@@ -85,7 +85,7 @@ public class MapaRotaFacade implements IMapaRotaFacade {
 		}
 		
 		//armazena as informações de menor rota no dto
-		mapaDestinoDTO.setCusto(mapaDestinoDTO.getValorCombustivel() * menorDistancia);
+		mapaDestinoDTO.setCusto(mapaDestinoDTO.getValorCombustivel() * (menorDistancia / mapaDestinoDTO.getAutonomiaVeiculo()));
 		mapaDestinoDTO.setMelhorRota(rotaFinal);
 	}
 	
@@ -181,7 +181,7 @@ public class MapaRotaFacade implements IMapaRotaFacade {
 		if (rota.getDestino() == null || rota.getDestino().equals("")) {
 			exceptions.add(new BusinessException("Rotas com a propriedade 'destino' vazia. Propriedade Destino é obrigatória"));
 		}		
-		if (rota.getDistancia() == null || rota.getDistancia().equals("")) {
+		if (rota.getDistancia() == null || rota.getDistancia() == 0) {
 			exceptions.add(new BusinessException("Rotas com a propriedade 'distancia' vazia. Propriedade Distancia é obrigatória"));
 		}
 		if (exceptions.size() > 0) {
@@ -194,16 +194,22 @@ public class MapaRotaFacade implements IMapaRotaFacade {
 	 * @param mapa
 	 */
 	private void validarRegrasRota(Rota rota, Long mapaId) {
+		List<BusinessException> exceptions = new ArrayList<BusinessException>();
+		
 		if (mapaId != null && rotaService.rotaExiste(rota, mapaId)) {
-			throw new BusinessException("Mapa já cadastrado. Por favor verifique!");
+			exceptions.add(new BusinessException("Mapa já cadastrado. Por favor verifique!"));
 		}
 		
 		if (rota.getOrigem().length() > 20) {
-			throw new BusinessException("Por favor, informe no máximo trinta caracteres para o Ponto de Origem. Quantida atual " + rota.getOrigem().length());	
+			exceptions.add(new BusinessException("Por favor, informe no máximo trinta caracteres para o Ponto de Origem. Quantida atual " + rota.getOrigem().length()));	
 		}
 		
 		if (rota.getDestino().length() > 20) {
-			throw new BusinessException("Por favor, informe no máximo trinta caracteres para o Ponto de Destino. Quantida atual " + rota.getDestino().length());			
+			exceptions.add(new BusinessException("Por favor, informe no máximo trinta caracteres para o Ponto de Destino. Quantida atual " + rota.getDestino().length()));			
+		}
+		
+		if (exceptions.size() > 0) {
+			throw new CollectionBusinessException(exceptions);
 		}
 	}
 

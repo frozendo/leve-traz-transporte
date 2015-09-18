@@ -25,7 +25,7 @@ public class MapaDestinoDTO {
 	/**
 	 * Capacidade que o veiculo é capaz de rodar sem abastecer
 	 */
-	private Double autonomiaVeiculo;
+	private Float autonomiaVeiculo;
 	
 	/**
 	 * Valor do litro do combustivel
@@ -68,11 +68,11 @@ public class MapaDestinoDTO {
 		this.destino = destino;
 	}
 
-	public Double getAutonomiaVeiculo() {
+	public Float getAutonomiaVeiculo() {
 		return autonomiaVeiculo;
 	}
 
-	public void setAutonomiaVeiculo(Double autonomiaVeiculo) {
+	public void setAutonomiaVeiculo(Float autonomiaVeiculo) {
 		this.autonomiaVeiculo = autonomiaVeiculo;
 	}
 
