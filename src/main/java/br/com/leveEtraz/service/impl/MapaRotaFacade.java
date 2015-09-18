@@ -10,11 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+
 import br.com.leveEtraz.dto.MapaDestinoDTO;
 import br.com.leveEtraz.entity.Mapa;
 import br.com.leveEtraz.entity.Rota;
 import br.com.leveEtraz.exception.BusinessException;
 import br.com.leveEtraz.exception.CollectionBusinessException;
+import br.com.leveEtraz.property.MensagensProperty;
 import br.com.leveEtraz.service.IMapaRotaFacade;
 import br.com.leveEtraz.service.IMapaService;
 import br.com.leveEtraz.service.IRotaService;
@@ -56,6 +58,7 @@ public class MapaRotaFacade implements IMapaRotaFacade {
 	}
 	
 	public void buscarMelhorRota(MapaDestinoDTO mapaDestinoDTO) {
+		validarEntradasBuscarRotas(mapaDestinoDTO);
 		List<Rota> rotas = rotaService.recuperarRotasMapa(mapaDestinoDTO.getNomeMapa());
 		
 		//Armazena o ponto final da rota
@@ -73,7 +76,7 @@ public class MapaRotaFacade implements IMapaRotaFacade {
 		String rotaFinal = "";
 		
 		if (rotasCalculadas.size() == 0) {
-			throw new BusinessException("Nenhuma rota encontrada para os valores informados");
+			throw new BusinessException(MensagensProperty.MSG_ERRO_15.getMensagem());
 		}
 		
 		//busca a menor distancia dentro das rotas calculadas
@@ -99,36 +102,36 @@ public class MapaRotaFacade implements IMapaRotaFacade {
 	 */
 	private void calcularRotas(List<Rota> rotas, String origemAtual, String percurso, Float distanciaPercorrida) {
 		Map<String, Float> mapearRotas = new HashMap<String, Float>();
-		Rota rotaDestino = null;
 		Float distanciaAtual = distanciaPercorrida;
+		String percursoRealizado = percurso;
+		
+		List<Rota> listaRotas = new ArrayList<Rota>(rotas);
 		
 		//caminha por todas as rotas encontradas
-		for (Rota rota : rotas) {
+		for (Rota rota : listaRotas) {
 			//se a origem da rota for igual a origemAtual verifica o destino
 			if (rota.getOrigem().equals(origemAtual)) {
 				
 				//se o destino for o mesmo solicitado pelo usuário armazena a rota
 				if (rota.getDestino().equals(destinoFinal)) {
-					rotaDestino = rota;
-					break;
+					percurso += origemAtual + ", " + rota.getDestino();
+					rotasCalculadas.put(percurso, distanciaPercorrida + rota.getDistancia());
 				} else {
 					mapearRotas.put(rota.getDestino(), rota.getDistancia());
+					rotas.remove(rota);
 				}
 			} 
 		}
 		
 		//se a rota de destino for encontrada, calcula o percurso e a distancia e armazena no map
 		//se a rota não for encontrada, passa o proximo ponto de origem para o metodo calcularRotas
-		if (rotaDestino == null) {	
-			percurso += origemAtual + " ";		
-			for (String novaOrigem : mapearRotas.keySet()) {
-				Float novaDistancia = distanciaAtual + mapearRotas.get(novaOrigem);
-				calcularRotas(rotas, novaOrigem, percurso, novaDistancia);
-			}			
-		} else {
-			percurso += origemAtual + " " + rotaDestino.getDestino();
-			rotasCalculadas.put(percurso, distanciaPercorrida + rotaDestino.getDistancia());
-		}
+
+		for (String novaOrigem : mapearRotas.keySet()) {
+			String novoPercurso = percursoRealizado + origemAtual + ", ";	
+			Float novaDistancia = distanciaAtual + mapearRotas.get(novaOrigem);
+			calcularRotas(rotas, novaOrigem, novoPercurso, novaDistancia);
+		}			
+		
 	}
 	
 	/**
@@ -151,7 +154,7 @@ public class MapaRotaFacade implements IMapaRotaFacade {
 	 */
 	private void validarCamposObrigatoriosMapa(Mapa mapa) {		
 		if (mapa.getNome() == null || mapa.getNome().equals("")) {
-			throw new BusinessException("O campo nome é obrigatório");
+			throw new BusinessException(MensagensProperty.MSG_ERRO_01.getMensagem());
 		}
 	}
 	
@@ -161,11 +164,11 @@ public class MapaRotaFacade implements IMapaRotaFacade {
 	 */
 	private void validarRegrasMapa(Mapa mapa) {
 		if (mapaService.verificarNomeExiste(mapa)) {
-			throw new BusinessException("Mapa já cadastrado. Por favor verifique!");
+			throw new BusinessException(MensagensProperty.MSG_ERRO_02.getMensagem());
 		}
 		
 		if (mapa.getNome().length() > 30) {
-			throw new BusinessException("Por favor, informe no máximo trinta caracteres para o Nome do mapa. Quantida atual " + mapa.getNome().length());			
+			throw new BusinessException(MensagensProperty.MSG_ERRO_03.getMensagem() + mapa.getNome().length());			
 		}
 	}
 	
@@ -176,13 +179,13 @@ public class MapaRotaFacade implements IMapaRotaFacade {
 	private void validarCamposObrigatoriosRota(Rota rota) {
 		List<BusinessException> exceptions = new ArrayList<BusinessException>();
 		if (rota.getOrigem() == null || rota.getOrigem().equals("")) {
-			exceptions.add(new BusinessException("Rotas com a propriedade 'origem' vazia. Propriedade Origem é obrigatória"));
+			exceptions.add(new BusinessException(MensagensProperty.MSG_ERRO_04.getMensagem()));
 		}		
 		if (rota.getDestino() == null || rota.getDestino().equals("")) {
-			exceptions.add(new BusinessException("Rotas com a propriedade 'destino' vazia. Propriedade Destino é obrigatória"));
+			exceptions.add(new BusinessException(MensagensProperty.MSG_ERRO_05.getMensagem()));
 		}		
 		if (rota.getDistancia() == null || rota.getDistancia() == 0) {
-			exceptions.add(new BusinessException("Rotas com a propriedade 'distancia' vazia. Propriedade Distancia é obrigatória"));
+			exceptions.add(new BusinessException(MensagensProperty.MSG_ERRO_06.getMensagem()));
 		}
 		if (exceptions.size() > 0) {
 			throw new CollectionBusinessException(exceptions);
@@ -197,20 +200,54 @@ public class MapaRotaFacade implements IMapaRotaFacade {
 		List<BusinessException> exceptions = new ArrayList<BusinessException>();
 		
 		if (mapaId != null && rotaService.rotaExiste(rota, mapaId)) {
-			exceptions.add(new BusinessException("Mapa já cadastrado. Por favor verifique!"));
+			exceptions.add(new BusinessException(MensagensProperty.MSG_ERRO_09.getMensagem()));
 		}
 		
-		if (rota.getOrigem().length() > 20) {
-			exceptions.add(new BusinessException("Por favor, informe no máximo trinta caracteres para o Ponto de Origem. Quantida atual " + rota.getOrigem().length()));	
+		if (rota.getOrigem().length() > 30) {
+			exceptions.add(new BusinessException(MensagensProperty.MSG_ERRO_07.getMensagem() + rota.getOrigem().length()));	
 		}
 		
-		if (rota.getDestino().length() > 20) {
-			exceptions.add(new BusinessException("Por favor, informe no máximo trinta caracteres para o Ponto de Destino. Quantida atual " + rota.getDestino().length()));			
+		if (rota.getDestino().length() > 30) {
+			exceptions.add(new BusinessException(MensagensProperty.MSG_ERRO_08.getMensagem() + rota.getDestino().length()));			
 		}
 		
 		if (exceptions.size() > 0) {
 			throw new CollectionBusinessException(exceptions);
 		}
+	}
+	
+	/**
+	 * Metodo que valida se os parametros para pesquisa do mapa foram passados corretamente
+	 * @param mapaDestinoDTO
+	 */
+	private void validarEntradasBuscarRotas(MapaDestinoDTO mapaDestinoDTO) {
+		
+		List<BusinessException> exceptions = new ArrayList<BusinessException>();
+		
+		if (mapaDestinoDTO.getNomeMapa() == null || mapaDestinoDTO.getNomeMapa().equals("")) {
+			exceptions.add(new BusinessException(MensagensProperty.MSG_ERRO_10.getMensagem()));
+		}
+		
+		if (mapaDestinoDTO.getOrigem() == null || mapaDestinoDTO.getOrigem().equals("")) {
+			exceptions.add(new BusinessException(MensagensProperty.MSG_ERRO_11.getMensagem()));	
+		}
+		
+		if (mapaDestinoDTO.getDestino() == null || mapaDestinoDTO.getDestino().equals("")) {
+			exceptions.add(new BusinessException(MensagensProperty.MSG_ERRO_12.getMensagem()));			
+		}
+		
+		if (mapaDestinoDTO.getAutonomiaVeiculo() == null || mapaDestinoDTO.getAutonomiaVeiculo() == 0) {
+			exceptions.add(new BusinessException(MensagensProperty.MSG_ERRO_13.getMensagem()));	
+		}
+		
+		if (mapaDestinoDTO.getValorCombustivel() == null || mapaDestinoDTO.getValorCombustivel() == 0) {
+			exceptions.add(new BusinessException(MensagensProperty.MSG_ERRO_14.getMensagem()));			
+		}
+		
+		if (exceptions.size() > 0) {
+			throw new CollectionBusinessException(exceptions);
+		}
+		
 	}
 
 }
