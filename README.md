@@ -9,15 +9,19 @@ Projeto Transportadora - Entregando Mercadorias
 * Hibernate
 
 **Spring Boot:**
+
 O Spring Boot foi escolhido pois fornece uma ótima estrutura para criações de micro serviços, sendo possível executar o projeto com poucas configurações, proporcionando uma forma rápida e simples de desenvolvimento. O proprio Spring Boot fornece um servidor embutido (Tomcat), o que facilitou o desenvolvimento do Webservice, pois não foi necessário a utilização de containers. Por fazer parte do projeto Spring Framework, ele também oferece IoC e Injeção de Dependencias, também utilizadas na solução.
 
 **Hibernate:**
+
 O Hibernate foi utilizado para facilitar o mapeamento entre as entidades Java e as tabelas do banco, fornecendo uma solução independente do tipo de bancos utilizado. Com ele, é possível alterar o fornecedor do banco de dados - de Mysql para Oracle por exemplo - alterando apenas algumas configurações do projeto.
 
 **Maven:**
+
 O Maven foi utilizado para resolver as dependencias do projeto e realizar o empacotamento da solução, gerando um jar para ser executado.
 
 **Arquitetura:**
+
 Para o projeto utilizei a solução em camadas, separando o processo da seguinte forma: 
  - Controller: responsável por receber as requisições e enviá-las para processamento.
  - Service: responsável pelo processamento dos dados
@@ -44,6 +48,7 @@ O projeto fornece dois serviços: novoMapa e melhorRotaMapa.
 Ambos são obtidos através de requisições do tipo POST, recebendo um json como parametro.
 
 **Cadastrando um novo mapa:**
+
 Para cadastrar um novo mapa, o sistema espera um Json que com as seguintes propriedades: 
 
 - nome = nome do mapa que será cadastrado
@@ -61,6 +66,7 @@ Segue um exemplo de um Json valido:
 A resposta é uma string com o resultado da execução: se o mapa foi cadastrado, apresenta uma mensagem de sucesso. Se algum erro ocorrer, apresenta mensagem informando qual erro ocorreu.
 
 **Consultando melhor rota:**
+
 Para consultar a melhor rota para um mapa, o sistema espera um Json que com as seguintes propriedades:
 
 - nomeMapa = nome do mapa pesquisado
@@ -87,6 +93,7 @@ Segue um exemplo de um Json retornado:
 Para informações sobre as regras consideradas, veja o arquivo Especificação-Webservice.doc
 
 **Outras informações:**
+
 1 - O arquivo hibernate.cfg.xml é o arquivo que armazena os parametrôs de conexão com o banco, e pode ser encontrado em \target\classes\hibernate.cfg.xml
 
 2 - No arquivo application.properties é possível trocar a porta do servidor. O mesmo pode ser encontrado em \target\classes\application.properties
