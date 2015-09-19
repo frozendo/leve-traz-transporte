@@ -108,7 +108,7 @@ public class MapaRotaFacade implements IMapaRotaFacade {
 		List<Rota> listaRotas = new ArrayList<Rota>(rotas);
 		
 		//caminha por todas as rotas encontradas
-		for (Rota rota : listaRotas) {
+		for (Rota rota : rotas) {
 			//se a origem da rota for igual a origemAtual verifica o destino
 			if (rota.getOrigem().equals(origemAtual)) {
 				
@@ -118,7 +118,7 @@ public class MapaRotaFacade implements IMapaRotaFacade {
 					rotasCalculadas.put(percurso, distanciaPercorrida + rota.getDistancia());
 				} else {
 					mapearRotas.put(rota.getDestino(), rota.getDistancia());
-					rotas.remove(rota);
+					listaRotas.remove(rota);
 				}
 			} 
 		}
@@ -129,7 +129,7 @@ public class MapaRotaFacade implements IMapaRotaFacade {
 		for (String novaOrigem : mapearRotas.keySet()) {
 			String novoPercurso = percursoRealizado + origemAtual + ", ";	
 			Float novaDistancia = distanciaAtual + mapearRotas.get(novaOrigem);
-			calcularRotas(rotas, novaOrigem, novoPercurso, novaDistancia);
+			calcularRotas(listaRotas, novaOrigem, novoPercurso, novaDistancia);
 		}			
 		
 	}
